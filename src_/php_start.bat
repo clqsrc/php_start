@@ -1,0 +1,1 @@
+"D:\\Program Files (x86)\\NuSphere\\PhpED\\php54\\php-cgi.exe" -b 127.0.0.1:9000
