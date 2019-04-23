@@ -1,7 +1,7 @@
 # php_start
 php_start 是一个 windows 下的 fastcgi 进程守护程序,相当于 windows 下的 php-fpm
 
-因为近年来用来不少 linux 下的 nginx 环境,所以有时候再用 windows 的时候也希望直接用 nginx 算了,还省得啰嗦的 iis https 配置.直接可以共用配置文件.
+因为近年来用了不少 linux 下的 nginx 环境,所以有时候再用 windows 的时候也希望直接用 nginx 算了,还省得啰嗦的 iis https 配置.直接可以共用配置文件.
 但 nginx 在 windows 上有两个比较大的问题:1.性能据说略差;2.windows 下没有 php-fpm ,不好集成 php (原始命令行的 php fastcgi 很容易崩溃,崩溃后那些php页面就全部不响应了).
 
 所以直接用 go 语言写了一个,写的过程中发现实际上是可以开启多个 php 的 fastcgi 进程的,而且性能还会更好一点.所以大伙在实际使用中不妨鼠标多双击几次,
