@@ -1,0 +1,72 @@
+推荐使用 windows 的批处理文件来定义要运行的程序,所以这里也收集一些相关的知识点
+
+
+1.
+后缀名为 cmd 与 bat 都是批处理文件,它们有什么区别
+
+一个使用cmd运行的
+一个用dos解释器解释运行
+cmd.exe是XP下的命令行模式32位的（所以一些DOS命令无法使用）
+cmd拿到DOS环境下运行不了，而bat在这些环境下都可以运行，因为cmd仅仅基于windows环境下的假DOS
+
+
+2.
+如何在批处理中得到文件所在的绝对路径
+
+因为使用相对路径有时还是会出问题的.
+这个可以参考 node.js 下的 npm.cmd 文件,其内容如下
+
+:: Created by npm, please don't edit manually.
+@ECHO OFF
+
+SETLOCAL
+
+SET "NODE_EXE=%~dp0\node.exe"
+IF NOT EXIST "%NODE_EXE%" (
+  SET "NODE_EXE=node"
+)
+
+SET "NPM_CLI_JS=%~dp0\node_modules\npm\bin\npm-cli.js"
+FOR /F "delims=" %%F IN ('CALL "%NODE_EXE%" "%NPM_CLI_JS%" prefix -g') DO (
+  SET "NPM_PREFIX_NPM_CLI_JS=%%F\node_modules\npm\bin\npm-cli.js"
+)
+IF EXIST "%NPM_PREFIX_NPM_CLI_JS%" (
+  SET "NPM_CLI_JS=%NPM_PREFIX_NPM_CLI_JS%"
+)
+
+"%NODE_EXE%" "%NPM_CLI_JS%" %*
+
+可以看到 %~dp0 就代表了当前的路径. 其中的 “d”为Drive的缩写，即为驱动器，磁盘、“p”为Path缩写，即为路径，目录.
+
+3.
+DOS批处理中%cd%和%~dp0的区别
+DOS批处理中%cd%和%~dp0的区别
+ 
+在DOS的批处理中，有时候需要知道当前的路径。
+在DOS中，有两个环境变量可以跟当前路径有关，一个是%cd%, 一个是%~dp0。
+ 
+    这两个变量的用法和代表的内容是不同的。
+ 
+    1. %cd% 可以用在批处理文件中，也可以用在命令行中；
+展开后，是驱动器盘符:+当前目录，如在dos窗口中进入c:\dir目录下面，  www.2cto.com  
+输入：echo %cd% ，则显示为：c:\dir 。
+ 
+   %cd%的内容是可以被改变的，其内容为命令的执行路径或批处理文件的执行路径。
+    2.%~dp0只可以用在批处理文件中，它是由它所在的批处理文件的目录位置决定的，
+是批处理文件所在的盘符:+路径。在执行这个批处理文件的过程中，
+它展开后的内容是不可以改变的。比如在D盘下有个批处理文件，path.bat，其内容为：
+ 
+[plain]
+@echo off     
+echo this is %%cd%%  %cd%     
+echo this is %%~dp0 %~dp0   
+ 
+在C:\ 和E:\分别下执行它，输出是不同的.
+
+4.
+cd /d %~dp0
+命令可以修改当前路径到批处理文件所在的目录.其中的 /d 选项，除了改变驱动器的当前目录之外，
+还可改变当前驱动器(默认情况下只能改变路径,如果不在同一个盘符下就不行了,所以最好是加一个 /d 选项)。
+
+
+
